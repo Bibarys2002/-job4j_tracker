@@ -22,7 +22,7 @@ public class Tracker {
 
             }
         }
-        return Arrays.copyOf(items, newSize);
+        return Arrays.copyOf(result, newSize);
     }
 
     public Item[] findAll() {

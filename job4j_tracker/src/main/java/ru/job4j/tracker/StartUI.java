@@ -1,9 +1,6 @@
 package ru.job4j.tracker;
-
 import java.util.Scanner;
-
 public class StartUI {
-
     public void init(Scanner scanner, Tracker tracker) {
         boolean run = true;
         while (run) {
@@ -17,8 +14,6 @@ public class StartUI {
                 Item item = new Item(name);
                 tracker.add(item);
                 System.out.println("Добавленная заявка: " + item);
-            } else if (select == 6) {
-                run = false;
             } else if (select == 1) {
                 System.out.println("=== Вывод всех заявок ===");
                 Item[] items = tracker.findAll();
@@ -30,10 +25,10 @@ public class StartUI {
                     System.out.println("Хранилище еще не содержит заявок");
                 }
             } else if (select == 2) {
-                System.out.println("=== Редактирование заявки ===");
-                System.out.print("Введите id: ");
+                System.out.println("=== Edit item ===");
+                System.out.print("Enter id: ");
                 int id = Integer.parseInt(scanner.nextLine());
-                System.out.print("Введите имя: ");
+                System.out.print("Enter name: ");
                 String name = scanner.nextLine();
                 Item item = new Item(name);
                 if (tracker.replace(id, item)) {
@@ -58,10 +53,23 @@ public class StartUI {
                 } else {
                     System.out.println("Заявка с введенным id: " + id + " не найдена.");
                 }
+            } else if (select == 5) {
+                System.out.println("=== Вывод заявок по имени ===");
+                System.out.print("Введите имя: ");
+                String name = scanner.nextLine();
+                Item[] items = tracker.findByName(name);
+                if (items.length > 0) {
+                    for (Item item : items) {
+                        System.out.println(item);
+                    }
+                } else {
+                    System.out.println("Заявки с именем: " + name + " не найдены.");
+                }
+            } else if (select == 6) {
+                run = false;
             }
         }
     }
-
     private void showMenu() {
         String[] menu = {
                 "Добавить новую заявку", "Показать все заявки", "Изменить заявку",
@@ -73,11 +81,9 @@ public class StartUI {
             System.out.println(i + ". " + menu[i]);
         }
     }
-
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Tracker tracker = new Tracker();
         new StartUI().init(scanner, tracker);
     }
-
 }
