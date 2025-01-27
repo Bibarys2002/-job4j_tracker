@@ -55,6 +55,17 @@ public class StartUI {
         System.out.println(item != null ? "Заявка удалена успешно." : "Ошибка удаления заявки.");
     }
 
+    public static void replaceItem(Input input, Tracker tracker) {
+        int id = input.askInt("Enter id: ");
+        String name = input.askStr("Enter name: ");
+        Item item = new Item(name);
+        if (tracker.replace(id, item)) {
+            System.out.println("Заявка изменена успешно.");
+        } else {
+            System.out.println("Ошибка замены заявки.");
+        }
+    }
+
     public static void findAllItems(Tracker tracker) {
         System.out.println("=== Вывод всех заявок ===");
         Item[] items = tracker.findAll();
@@ -64,17 +75,6 @@ public class StartUI {
             }
         } else {
             System.out.println("Хранилище еще не содержит заявок");
-        }
-    }
-
-    public static void replaceItem(Input input, Tracker tracker) {
-        int id = input.askInt("Enter id: ");
-        String name = input.askStr("Enter name: ");
-        Item item = new Item(name);
-        if (tracker.replace(id, item)) {
-            System.out.println("Заявка изменена успешно.");
-        } else {
-            System.out.println("Ошибка замены заявки.");
         }
     }
 

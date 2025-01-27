@@ -51,16 +51,6 @@ public class TrackerTest {
         Item[] result = tracker.findByName(second.getName());
         assertThat(result[1].getName()).isEqualTo(second.getName());
     }
-    @Test
-    public void whenReplaceItemIsSuccessful() {
-        Tracker tracker = new Tracker();
-        Item item = new Item("Bug");
-        tracker.add(item);
-        int id = item.getId();
-        Item updateItem = new Item("Bug with description");
-        tracker.replace(id, updateItem);
-        assertThat(tracker.findById(id).getName()).isEqualTo("Bug with description");
-    }
 
     @Test
     public void whenReplaceItemIsNotSuccessful() {
@@ -74,6 +64,15 @@ public class TrackerTest {
     }
 
     @Test
+    public void whenDeleteItemIsNotSuccessful() {
+        Tracker tracker = new Tracker();
+        Item item = new Item("Bug");
+        tracker.add(item);
+        tracker.delete(1000);
+        assertThat(tracker.findById(item.getId()).getName()).isEqualTo("Bug");
+    }
+
+    @Test
     public void whenDeleteItemIsSuccessful() {
         Tracker tracker = new Tracker();
         Item item = new Item("Bug");
@@ -84,11 +83,39 @@ public class TrackerTest {
     }
 
     @Test
-    public void whenDeleteItemIsNotSuccessful() {
+    public void whenReplaceItemIsSuccessful() {
         Tracker tracker = new Tracker();
         Item item = new Item("Bug");
         tracker.add(item);
-        tracker.delete(1000);
-        assertThat(tracker.findById(item.getId()).getName()).isEqualTo("Bug");
+        int id = item.getId();
+        Item updateItem = new Item("Bug with description");
+        tracker.replace(id, updateItem);
+        assertThat(tracker.findById(id).getName()).isEqualTo("Bug with description");
+    }
+
+    @Test
+    void whenReplaceItem() {
+        Tracker tracker = new Tracker();
+        Item item = new Item("new item");
+        tracker.add(item);
+        String[] answers = {
+                String.valueOf(item.getId()), // id сохраненной заявки в объект tracker.
+                "edited item"
+        };
+        StartUI.replaceItem(new MockInput(answers), tracker);
+        Item edited = tracker.findById(item.getId());
+        assertThat(edited.getName()).isEqualTo("edited item");
+    }
+
+    @Test
+    void whenDeleteItem() {
+        Tracker tracker = new Tracker();
+        Item item = new Item("Bug");
+        tracker.add(item);
+        String[] answers = {
+                String.valueOf(item.getId())};
+        StartUI.deleteItem(new MockInput(answers), tracker);
+        tracker.delete(item.getId());
+        assertThat(tracker.findById(item.getId())).isNull();
     }
 }
