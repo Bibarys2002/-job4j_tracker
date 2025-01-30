@@ -17,9 +17,9 @@ class FactorialTest {
     }
     @Test
     public void whenException() {
-        int start = 5;
+        int number = 5;
         int expected = 120;
-        int result = Factorial.calc(start);
+        int result = Factorial.calc(number);
         assertThat(result).isEqualTo(expected);
     }
 
